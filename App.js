@@ -6,6 +6,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Screens
 import HomeScreen from "./Screens/HomeScreen";
 import Italien from "./Screens/Italian"; // make sure this file exists
+import French from "./Screens/French";
+import Tunisian from "./Screens/Tunisian";
+import Mexican from "./Screens/Mexican";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +25,9 @@ export default function App() {
       >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Italien" component={Italien} />
+           <Stack.Screen name="French" component={French} />
+        <Stack.Screen name="Tunisian" component={Tunisian} />
+        <Stack.Screen name="Mexican" component={Mexican} />
       </Stack.Navigator>
     </NavigationContainer>
   );

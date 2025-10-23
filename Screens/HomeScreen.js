@@ -32,13 +32,17 @@ const Icons = [
 ];
 
 export default function HomeScreen({ navigation }) {
-  const handlePress = (country) => {
-    if (country === "Italian") {
-      navigation.navigate("Italien"); // Navigate to Italien screen
-    } else {
-      Alert.alert("🍽 " + country, `${country} recipes coming soon!`);
-    }
-  };
+ const handlePress = (country) => {
+  if (country === "Italian") {
+    navigation.navigate("Italien");
+  } else if (country === "French") {
+    navigation.navigate("French");
+  } else if (country === "Tunisian") {
+    navigation.navigate("Tunisian");
+  } else if (country === "Mexican") {
+    navigation.navigate("Mexican");
+  }
+};
 
   return (
     <SafeAreaView style={styles.safeArea}>
