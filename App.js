@@ -7,8 +7,16 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./Screens/HomeScreen";
 import Italien from "./Screens/Italian"; // make sure this file exists
 import French from "./Screens/French";
+<<<<<<< Updated upstream
 import Tunisian from "./Screens/Tunisian";
 import Mexican from "./Screens/Mexican";
+=======
+import Login from "./Screens/Login";
+import Register from "./Screens/Register";
+import Snacks from "./Screens/Snacks";
+
+
+>>>>>>> Stashed changes
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +36,10 @@ export default function App() {
            <Stack.Screen name="French" component={French} />
         <Stack.Screen name="Tunisian" component={Tunisian} />
         <Stack.Screen name="Mexican" component={Mexican} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Snacks" component={Snacks} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

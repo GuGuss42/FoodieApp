@@ -70,6 +70,10 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.flagLabel}>{icon.name}</Text>
             </TouchableOpacity>
           ))}
+       <TouchableOpacity onPress={() => navigation.navigate("Snacks")}>
+  <Text style={{ color: "#16a085", textAlign: "center" }}>See Snacks 🍿</Text>
+   </TouchableOpacity>
+
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -79,7 +83,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#0e0000ff",
   },
   scrollContent: {
     flexGrow: 1,

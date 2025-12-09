@@ -10,7 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-// 🔹 Reusable Header Component
 export default function Header({ title }) {
 
   const onMenuPress = () => {
@@ -33,11 +32,18 @@ export default function Header({ title }) {
         <Text style={styles.title}>{title}</Text>
 
         {/* ☰ Menu Button */}
-        <TouchableOpacity onPress={onMenuPress} style={styles.menuButton}>
+        <TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}>
           <Ionicons name="menu" size={30} color="#fff" />
         </TouchableOpacity>
 
       </View>
+
+      {/* 🍔 Independent Menu Component */}
+      <MenuPopup
+        visible={menuVisible}
+        onClose={handleClose}
+        onNavigate={handleNavigate}
+      />
     </SafeAreaView>
   );
 }
