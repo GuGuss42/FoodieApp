@@ -7,17 +7,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./Screens/HomeScreen";
 import Italien from "./Screens/Italian"; // make sure this file exists
 import French from "./Screens/French";
-<<<<<<< Updated upstream
 import Tunisian from "./Screens/Tunisian";
 import Mexican from "./Screens/Mexican";
-=======
 import Login from "./Screens/Login";
 import Register from "./Screens/Register";
 import Snacks from "./Screens/Snacks";
-import Snacks from "./Screens/Snacks";
-
-
->>>>>>> Stashed changes
 
 const Stack = createNativeStackNavigator();
 
