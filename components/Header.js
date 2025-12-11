@@ -1,30 +1,28 @@
-import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  Image, 
-  TouchableOpacity, 
-  Alert 
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Header({ title }) {
-
   const onMenuPress = () => {
     Alert.alert("🍔 Menu", "You pressed the menu button!");
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={styles.safeArea} edges={["top"]}>
       <View style={styles.navBar}>
-        
         {/* 🧑 User Image */}
         <View style={styles.userIcon}>
-          <Image 
-            source={require('../Sources/user.jpg')} 
-            style={styles.userImage} 
+          <Image
+            source={require("../Sources/user.jpg")}
+            style={styles.userImage}
           />
         </View>
 
@@ -36,7 +34,6 @@ export default function Header({ title }) {
         <TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}>
           <Ionicons name="menu" size={30} color="#fff" />
         </TouchableOpacity>
-
       </View>
 
       {/* 🍔 Independent Menu Component */}
@@ -58,17 +55,17 @@ export default function Header({ title }) {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#16a085',
+    backgroundColor: "#16a085",
   },
   navBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 15,
     paddingVertical: 10,
-    backgroundColor: '#16a085',
+    backgroundColor: "#16a085",
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
   },
@@ -76,20 +73,20 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: "#fff",
   },
   userImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
   },
   menuButton: {
     padding: 5,

@@ -27,14 +27,14 @@ export default function App() {
       <StatusBar style="light" />
 
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Login"
         screenOptions={{
           headerShown: false, // hide default header bar
         }}
       >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Italien" component={Italien} />
-           <Stack.Screen name="French" component={French} />
+              <Stack.Screen name="French" component={French} />
         <Stack.Screen name="Tunisian" component={Tunisian} />
         <Stack.Screen name="Mexican" component={Mexican} />
         <Stack.Screen name="Login" component={Login} />
