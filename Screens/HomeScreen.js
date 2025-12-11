@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import ImageSlider from "../components/ImageSlider";
-
+import LoginScreen from "./Login";
 const Icons = [
   {
     uri: "https://th.bing.com/th/id/R.521574239a33cd88906847edc0aedfe0?rik=65GGgsy7rLtYOg&riu=http%3a%2f%2fwallpapercave.com%2fwp%2fwp1841297.jpg&ehk=NVXgea9Mvc5uzupW5na8bS0OK96LWo5FDW3DzI8T6m0%3d&risl=&pid=ImgRaw&r=0",
@@ -32,6 +32,8 @@ const Icons = [
 ];
 
 export default function HomeScreen({ navigation }) {
+
+
  const handlePress = (country) => {
   if (country === "Italian") {
     navigation.navigate("Italien");
@@ -43,6 +45,7 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate("Mexican");
   }
 };
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
