@@ -32,11 +32,19 @@ export default function Header({ title }) {
         <Text style={styles.title}>{title}</Text>
 
         {/* ☰ Menu Button */}
+        <TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}/>
         <TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}>
           <Ionicons name="menu" size={30} color="#fff" />
         </TouchableOpacity>
 
       </View>
+
+      {/* 🍔 Independent Menu Component */}
+      <MenuPopup
+        visible={menuVisible}
+        onClose={handleClose}
+        onNavigate={handleNavigate}
+      />
 
       {/* 🍔 Independent Menu Component */}
       <MenuPopup

@@ -14,6 +14,7 @@ import Mexican from "./Screens/Mexican";
 import Login from "./Screens/Login";
 import Register from "./Screens/Register";
 import Snacks from "./Screens/Snacks";
+import Snacks from "./Screens/Snacks";
 
 
 >>>>>>> Stashed changes
