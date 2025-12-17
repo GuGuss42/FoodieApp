@@ -73,12 +73,26 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.flagLabel}>{icon.name}</Text>
             </TouchableOpacity>
           ))}
-       <TouchableOpacity onPress={() => navigation.navigate("Snacks")}>
+       <TouchableOpacity onPress={() => navigation.navigate("snacks")}>
   <Text style={{ color: "#16a085", textAlign: "center" }}>See Snacks 🍿</Text>
+   </TouchableOpacity>
+
+    <TouchableOpacity onPress={() => navigation.navigate("AddRecipe")}>
+  <Text style={{ color: "#16a085", textAlign: "center" }}>Add yours 🍴 </Text>
    </TouchableOpacity>
 
         </View>
       </ScrollView>
+<View style={styles.transparentContainer}>
+<TouchableOpacity
+  style={styles.elevatedButton}
+  onPress={() => navigation.navigate("Feed")}
+>
+
+    <Text style={styles.buttonText}>navigate to the feed page</Text>
+  </TouchableOpacity>
+</View>
+
     </SafeAreaView>
   );
 }
@@ -142,5 +156,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#16a085",
+  },
+   transparentContainer: {
+    backgroundColor: "#f5f7f6",
+    padding: 15,
+  },
+
+  elevatedButton: {
+    backgroundColor: "#16a085",
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    alignItems: "center",
+
+    // Android shadow
+    elevation: 8,
+
+    // iOS shadow
+    shadowColor: "#0f0202ff",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+  },
+
+  buttonText: {
+    color: "#e1ebe9ff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

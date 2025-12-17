@@ -12,6 +12,9 @@ import Mexican from "./Screens/Mexican";
 import Login from "./Screens/Login";
 import Register from "./Screens/Register";
 import Snacks from "./Screens/Snacks";
+import ProfileScreen from "./Screens/profile";
+import AddRecipe from "./Screens/AddRecipe";
+import RecipesFeed from "./Screens/RecipesFeed";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,12 +31,16 @@ export default function App() {
       >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Italien" component={Italien} />
-              <Stack.Screen name="French" component={French} />
+        <Stack.Screen name="French" component={French} />
         <Stack.Screen name="Tunisian" component={Tunisian} />
         <Stack.Screen name="Mexican" component={Mexican} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Snacks" component={Snacks} />
+        <Stack.Screen name="snacks" component={Snacks} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="AddRecipe" component={AddRecipe} />
+        <Stack.Screen name="Feed" component={RecipesFeed} />
+
 
       </Stack.Navigator>
     </NavigationContainer>

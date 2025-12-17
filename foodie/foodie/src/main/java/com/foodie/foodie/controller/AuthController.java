@@ -38,7 +38,7 @@ public ResponseEntity<ResponseDTO> Login (@RequestBody LoginRequest request){
 Optional<User> userOPT = userRepository.findByEmail(request.getEmail());
  if (userOPT.isPresent()){
     User user = userOPT.get() ;
-    System.out.println(user.toString());
+    System.out.println("User login attempt: " + user.getEmail());
     if (user.getPassword().equals(request.getPassword())){
     return ResponseEntity.ok(
         new ResponseDTO<>(true, "login succesfful ", user ) 
@@ -48,10 +48,38 @@ Optional<User> userOPT = userRepository.findByEmail(request.getEmail());
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .body(new ResponseDTO<>(false, "Invalid email or password", null));
  }
+@PostMapping("/register")
+public ResponseEntity<ResponseDTO> register(@RequestBody User user) {
+    try {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseDTO<>(false, "Email already exists", null));
+        }
+          if (user.getRole() == null || user.getRole().isBlank()) {
+        user.setRole("USER");
+        }
 
+        userRepository.save(user);
 
+        return ResponseEntity.ok(
+                new ResponseDTO<>(true, "Registration successful", null)
+        );
 
+    } catch (Exception e) {
+        e.printStackTrace(); // prints full stack trace in console
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ResponseDTO<>(false, "Error: " + e.getMessage(), null));
+    }
 }
+
+
+
+ }
+
+
+
+
 
 
 

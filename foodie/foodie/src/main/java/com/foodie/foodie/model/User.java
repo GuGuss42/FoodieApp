@@ -22,7 +22,7 @@ public class User {
 
     private String phone;
 
-    private String role;
+    private String role ;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

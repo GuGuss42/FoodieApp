@@ -7,23 +7,31 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import { register } from "../services/authService";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+const [phone, setPhone] = useState("");
 
-  const handleRegister = () => {
-    if (!name || !email || !password) {
-      Alert.alert("Missing Fields", "Please fill in all fields.");
-      return;
-    }
+const handleRegister = async () => {
+  if (!name || !email || !password) {
+    Alert.alert("Missing Fields", "Please fill in all fields.");
+    return;
+  }
 
-    // ✅ For now, just show success and go back to Login
-    Alert.alert("Registration Successful", "You can now log in.", [
-      { text: "OK", onPress: () => navigation.navigate("Login") },
-    ]);
-  };
+  const data = await register(name, email, password, phone, "USER");
+
+  if (data.success === true) {
+    Alert.alert(`WELCOME ${name}`);
+    navigation.navigate("Home");
+  } else {
+    Alert.alert("Registration Failed", data.message);
+  }
+};
+
+
 
   return (
     <View style={styles.container}>
@@ -32,14 +40,14 @@ const RegisterScreen = ({ navigation }) => {
 
       <TextInput
         style={styles.input}
-        placeholder="Full Name"
+        placeholder="Full Name *"
         value={name}
         onChangeText={setName}
       />
 
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Email *"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -48,11 +56,18 @@ const RegisterScreen = ({ navigation }) => {
 
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="Password *"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
+      <TextInput
+  style={styles.input}
+  placeholder="Phone Number"
+  value={phone}
+  onChangeText={setPhone}
+/>
+
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Register</Text>

@@ -1,62 +1,46 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import MenuPopup from "./Menu";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header({ title }) {
-  const onMenuPress = () => {
-    Alert.alert("🍔 Menu", "You pressed the menu button!");
-  };
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const handleMenuPress = () => setMenuVisible(true);
+  const handleClose = () => setMenuVisible(false);
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
       <View style={styles.navBar}>
-        {/* 🧑 User Image */}
-        <View style={styles.userIcon}>
-          <Image
-            source={require("../Sources/user.jpg")}
-            style={styles.userImage}
-          />
-        </View>
+     <View style={styles.userIcon}>
+  <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+    <Image
+      source={require("../Sources/user.jpg")}
+      style={styles.userImage}
+      resizeMode="cover" // optional, ensures image scales nicely
+    />
+  </TouchableOpacity>
+</View>
 
-        {/* 🏷️ Title */}
+
         <Text style={styles.title}>{title}</Text>
 
-        {/* ☰ Menu Button */}
-        <TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}/>
         <TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}>
           <Ionicons name="menu" size={30} color="#fff" />
         </TouchableOpacity>
       </View>
 
-      {/* 🍔 Independent Menu Component */}
-      <MenuPopup
-        visible={menuVisible}
-        onClose={handleClose}
-        onNavigate={handleNavigate}
-      />
-
-      {/* 🍔 Independent Menu Component */}
-      <MenuPopup
-        visible={menuVisible}
-        onClose={handleClose}
-        onNavigate={handleNavigate}
-      />
+      {/* Self-contained Menu */}
+      <MenuPopup visible={menuVisible} onClose={handleClose} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: "#16a085",
-  },
+  safeArea: { backgroundColor: "#16a085" },
   navBar: {
     flexDirection: "row",
     alignItems: "center",
@@ -77,18 +61,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#fff",
   },
-  userImage: {
-    width: "100%",
-    height: "100%",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
-    flex: 1,
-    textAlign: "center",
-  },
-  menuButton: {
-    padding: 5,
-  },
+  userImage: { width: "100%", height: "100%" },
+  title: { fontSize: 20, fontWeight: "bold", color: "#fff", flex: 1, textAlign: "center" },
+  menuButton: { padding: 5 },
 });

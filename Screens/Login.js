@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
+import { login } from "../services/authService";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
 const handleLogin = async () => {
   const result = await login(email, password);
 
-  if (result.success) {
+  if (result.success === true) {
     navigation.navigate("Home");
   } else {
     Alert.alert("Login Failed", result.message);

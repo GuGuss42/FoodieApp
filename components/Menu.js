@@ -1,8 +1,20 @@
-// 📁 components/MenuPopup.js
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Alert } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
-export default function MenuPopup({ visible, onClose, onNavigate }) {
+
+
+
+export default function MenuPopup({ visible, onClose }) {
+  // Internal "navigation" handler
+  const navigation = useNavigation();
+const handleNavigate = (screen) => {
+  setTimeout(() => {
+    navigation.navigate(screen); 
+  }, 200);
+};
+
+
   return (
     <Modal
       animationType="fade"
@@ -14,15 +26,15 @@ export default function MenuPopup({ visible, onClose, onNavigate }) {
         <View style={styles.popup}>
           <Text style={styles.title}>🍴 Menu</Text>
 
-          <TouchableOpacity style={styles.menuItem} onPress={() => onNavigate("Home")}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleNavigate("Home")}>
             <Text style={styles.menuText}>🏠 Home</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem} onPress={() => onNavigate("Snacks")}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleNavigate("snacks")}>
             <Text style={styles.menuText}>🍟 Snacks</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem} onPress={() => onNavigate("Italien")}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleNavigate("Italien")}>
             <Text style={styles.menuText}>🍝 Italian</Text>
           </TouchableOpacity>
 
