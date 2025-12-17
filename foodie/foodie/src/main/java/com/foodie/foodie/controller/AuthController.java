@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.foodie.foodie.DTO.ChangePasswordDTO;
 import com.foodie.foodie.DTO.LoginRequest;
 import com.foodie.foodie.DTO.ResponseDTO;
 import com.foodie.foodie.model.User;
@@ -72,10 +74,38 @@ public ResponseEntity<ResponseDTO> register(@RequestBody User user) {
                 .body(new ResponseDTO<>(false, "Error: " + e.getMessage(), null));
     }
 }
+@PutMapping("/changepass")
+public ResponseEntity<ResponseDTO> changePassword(
+        @RequestBody ChangePasswordDTO dto) {
 
+    Optional<User> userOpt = userRepository.findByEmail(dto.getEmail());
 
+    if (userOpt.isEmpty()) {
+        return ResponseEntity.badRequest().body(
+            new ResponseDTO(false, "User not found", null)
+        );
+    }
 
- }
+    User user = userOpt.get();
+    System.out.println("Password change attempt for: " + user.getEmail());
+
+    // ❗ Plain text comparison (as requested)
+    if (!user.getPassword().equals(dto.getOldPassword())) {
+        return ResponseEntity.badRequest().body(
+            new ResponseDTO(false, "Old password incorrect", null)
+        );
+    }
+
+    // ✅ Update password
+    user.setPassword(dto.getNewPassword());
+    userRepository.save(user);
+
+    return ResponseEntity.ok(
+        new ResponseDTO(true, "Password updated successfully", null)
+    );
+}
+}
+
 
 
 

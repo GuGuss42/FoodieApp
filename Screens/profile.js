@@ -8,23 +8,43 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import Header from "../components/Header";
-import MenuPopup from "../components/Menu";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import Header from "../components/Header";
+import MenuPopup from "../components/Menu";
+import { modifyPassword } from "../services/authService";
+
+// 🧑 Simple predefined avatars
+const AVATARS = [
+  "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+  "https://cdn-icons-png.flaticon.com/512/3135/3135789.png",
+  "https://cdn-icons-png.flaticon.com/512/3135/3135768.png",
+  "https://cdn-icons-png.flaticon.com/512/4140/4140037.png",
+  "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+];
 
 export default function ProfileScreen({ navigation }) {
-  const [user, setUser] = useState({ fullName: "", email: "", photo: null });
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [user, setUser] = useState({
+    fullName: "",
+    email: "",
+    photo: null,
+  });
 
-  // Load user info from AsyncStorage
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [showAvatars, setShowAvatars] = useState(false);
+
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
+  // 🔹 Load user from AsyncStorage
   useEffect(() => {
     const loadUser = async () => {
       try {
         const storedUser = await AsyncStorage.getItem("user");
         if (storedUser) {
-          setUser({ ...JSON.parse(storedUser), photo: null }); // photo will be null initially
+          setUser(JSON.parse(storedUser));
         }
       } catch (e) {
         console.log("Error loading user info:", e);
@@ -33,62 +53,115 @@ export default function ProfileScreen({ navigation }) {
     loadUser();
   }, []);
 
-  const handleNavigate = (screen) => {
-    setMenuVisible(false);
-    navigation.navigate(screen);
+  // 🔹 Avatar selection
+  const handleAvatarSelect = async (avatar) => {
+    const updatedUser = { ...user, photo: avatar };
+    setUser(updatedUser);
+    await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
+    setShowAvatars(false);
+  };
+
+  // 🔹 Change password
+  const handleChangePassword = async () => {
+    if (!oldPassword || !newPassword) {
+      Alert.alert("Error", "Please fill all fields");
+      return;
+    }
+
+    const result = await modifyPassword(
+      user.email,
+      oldPassword,
+      newPassword
+    );
+
+    if (result.success) {
+      Alert.alert("Success", "Password updated successfully");
+      setOldPassword("");
+      setNewPassword("");
+    } else {
+      Alert.alert("Error", result.message);
+    }
+  };
+
+  // 🔹 Logout
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("user");
+    navigation.replace("Login");
   };
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Header */}
       <Header title="Profile" />
 
-      {/* Menu Popup */}
       <MenuPopup
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
-        onNavigate={handleNavigate}
+        onNavigate={(screen) => navigation.navigate(screen)}
       />
 
-<ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.profileCard}>
+          <View style={styles.profileHeader} />
 
-  <View style={styles.profileCard}>
+          {/* Avatar */}
+          <TouchableOpacity
+            style={styles.avatarWrapper}
+            onPress={() => setShowAvatars(!showAvatars)}
+          >
+            {user.photo ? (
+              <Image source={{ uri: user.photo }} style={styles.avatar} />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <Text style={styles.avatarText}>Choose Avatar</Text>
+              </View>
+            )}
+          </TouchableOpacity>
 
-    {/* Green header */}
-    <View style={styles.profileHeader} />
+          {/* Avatar picker */}
+          {showAvatars && (
+            <View style={styles.avatarList}>
+              {AVATARS.map((a, i) => (
+                <TouchableOpacity key={i} onPress={() => handleAvatarSelect(a)}>
+                  <Image source={{ uri: a }} style={styles.smallAvatar} />
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
 
-    {/* Avatar */}
-    <TouchableOpacity style={styles.avatarWrapper}>
-      {user.photo ? (
-        <Image source={{ uri: user.photo }} style={styles.avatar} />
-      ) : (
-        <View style={styles.avatarPlaceholder}>
-          <Text style={styles.avatarText}>Add Photo</Text>
+          <Text style={styles.name}>{user.fullName}</Text>
+          <Text style={styles.email}>{user.email}</Text>
+
+          {/* Password form */}
+          <View style={styles.form}>
+            <Text style={styles.labels}>Old Password</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry
+              value={oldPassword}
+              onChangeText={setOldPassword}
+            />
+
+            <Text style={styles.labels}>New Password</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry
+              value={newPassword}
+              onChangeText={setNewPassword}
+            />
+          </View>
         </View>
-      )}
-    </TouchableOpacity>
+      </ScrollView>
 
-    {/* Name + Email */}
-    <Text style={styles.name}>{user.fullName}</Text>
-    <Text style={styles.email}>{user.email}</Text>
+      <TouchableOpacity style={styles.btn} onPress={handleChangePassword}>
+        <Text style={styles.btnText}>Change Password</Text>
+      </TouchableOpacity>
 
-    {/* Inputs */}
-    <View style={styles.form}>
-      <Text style={styles.labels}>Full Name</Text>
-      <TextInput style={styles.input} />
-
-      <Text style={styles.labels}>Email</Text>
-      <TextInput style={styles.input} />
-    </View>
-
-  </View> 
-
-</ScrollView>
-<View>
-<TouchableOpacity style={styles.btn}>
-  <Text>Submit</Text>
-</TouchableOpacity>
-</View>
+      <TouchableOpacity
+        style={[styles.btn, styles.logoutBtn]}
+        onPress={handleLogout}
+      >
+        <Text style={styles.btnText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -145,6 +218,18 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
+  avatarList: {
+    flexDirection: "row",
+    marginVertical: 10,
+  },
+
+  smallAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginHorizontal: 6,
+  },
+
   name: {
     fontSize: 22,
     fontWeight: "bold",
@@ -179,9 +264,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
   },
-  btn: {
-    backgroundColor: "#f5f5f5",
-    
-  }
-});
 
+  btn: {
+    backgroundColor: "#00897B",
+    padding: 16,
+    borderRadius: 10,
+    margin: 16,
+  },
+
+  logoutBtn: {
+    backgroundColor: "#e74c3c",
+  },
+
+  btnText: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16,
+  },
+});

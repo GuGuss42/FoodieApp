@@ -2,17 +2,22 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Store user info (name + email)
+// 🔹 Store user info (name + email + photo)
 const storeUserInfo = async (user) => {
   try {
-    // user is an object like { fullName, email }
-    await AsyncStorage.setItem("user", JSON.stringify(user));
+    const userToStore = {
+      fullName: user.fullName,
+      email: user.email,
+      photo: user.photo ?? null, // ✅ always present
+    };
+
+    await AsyncStorage.setItem("user", JSON.stringify(userToStore));
   } catch (e) {
     console.log("Error storing user info:", e);
   }
 };
 
-// Retrieve user info
+// 🔹 Retrieve user info
 export const getUserInfo = async () => {
   try {
     const userString = await AsyncStorage.getItem("user");
@@ -23,6 +28,7 @@ export const getUserInfo = async () => {
   }
 };
 
+// 🔐 LOGIN
 export async function login(email, password) {
   try {
     const { data } = await axios.post(
@@ -30,13 +36,14 @@ export async function login(email, password) {
       { email, password }
     );
 
-    // Store name + email together
+    // ✅ store full user object
     await storeUserInfo({
       fullName: data.data.fullName,
       email: data.data.email,
+      photo: null, // 👈 no photo yet
     });
 
-    return data; // Spring sends ResponseDTO
+    return data;
   } catch (error) {
     return {
       success: false,
@@ -45,6 +52,7 @@ export async function login(email, password) {
   }
 }
 
+// 📝 REGISTER
 export async function register(fullName, email, password, phone, role) {
   const body = { fullName, email, password, phone, role };
 
@@ -54,10 +62,11 @@ export async function register(fullName, email, password, phone, role) {
       body
     );
 
-    // Store name + email together
+    // ✅ store user immediately
     await storeUserInfo({
-      fullName: fullName,
-      email: email,
+      fullName,
+      email,
+      photo: null, // 👈 ready for later
     });
 
     return data;
@@ -68,3 +77,32 @@ export async function register(fullName, email, password, phone, role) {
     };
   }
 }
+
+export async function modifyPassword(email, oldPassword, newPassword) {
+  try {
+    const { data } = await axios.put(
+      "http://192.168.1.4:8083/api/auth/changepass",
+      {
+        email,
+        oldPassword,
+        newPassword,
+      }
+    );
+    return data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Password update failed",
+    };
+  }
+}
+export async function logout() {
+  try {
+    await AsyncStorage.removeItem("user");
+    return true;
+  } catch (e) {
+    console.log("Logout error:", e);
+    return false;
+  }
+}
+
